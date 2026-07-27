@@ -860,13 +860,12 @@ body.touch .quote-controls button{cursor:pointer;}
 .hearts .heart:nth-child(8) { left: 80%; animation-delay: 14s; }
 .hearts .heart:nth-child(9) { left: 90%; animation-delay: 16s; }
 
-
 @media (max-width: 768px) {
   .countdown-number {
     font-size: 30vw;
   }
   .countdown-message {
-    font-size: 8vw;
+    font-size: 5vw; /* Adjusted for smaller screens */
   }
 }
 
@@ -875,11 +874,28 @@ body.touch .quote-controls button{cursor:pointer;}
     font-size: 35vw;
   }
   .countdown-message {
-    font-size: 10vw;
+    font-size: 7vw; /* Adjusted for smaller screens */
   }
+}
   .moon {
     width: 60px;
     height: 60px;
+    box-shadow: 10px 10px 0 0 #fff; /* Adjusted shadow for smaller moon */
+  }
+  .hearts .heart {
+    width: 15px; /* Smaller hearts for mobile */
+    height: 15px;
+  }
+  .hearts .heart::before,
+  .hearts .heart::after {
+    width: 15px;
+    height: 15px;
+  }
+  .hearts .heart::before {
+    top: -7.5px; /* Adjusted position for smaller hearts */
+  }
+  .hearts .heart::after {
+    left: 7.5px; /* Adjusted position for smaller hearts */
   }
 }
 </style>
