@@ -655,8 +655,257 @@ body.touch .quote-controls button{cursor:pointer;}
     background: transparent;
 }
 </style>
+<style>
+#countdown-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: linear-gradient(-45deg, #0a0e1f, #1a1e3f, #2a2e5f, #3a3e7f);
+  background-size: 400% 400%;
+  animation: gradient-animation 15s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: white;
+  font-family: 'Cinzel', serif;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.countdown-number {
+  font-size: 25vw;
+  font-weight: bold;
+  opacity: 0;
+  transform: scale(0.5);
+  animation: countdown-animation 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 50px rgba(255, 255, 255, 0.3), 0 0 100px rgba(255, 255, 255, 0.2);
+}
+
+
+@keyframes countdown-animation {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-30deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(10deg);
+  }
+  90% {
+    opacity: 1;
+    transform: scale(1.1) rotate(5deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5) rotate(0deg);
+  }
+}
+
+.countdown-message {
+  font-size: 6vw; /* Reduced from 8vw */
+  font-weight: bold;
+  text-align: center;
+}
+
+.countdown-message .letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(50px) scale(0.5);
+    animation: letter-animation 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes letter-animation {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.countdown-background-animations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.moon {
+  position: absolute;
+  top: 10%;
+  left: -10%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  box-shadow: 15px 15px 0 0 #fff;
+  animation: moon-move 20s linear infinite;
+}
+
+@keyframes moon-move {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateX(110vw) translateY(10vh) rotate(360deg);
+  }
+}
+
+.stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.stars::before, .stars::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 
+    /* Static stars */
+    50vw 10vh 0 0 #fff, 10vw 20vh 0 0 #fff, 80vw 30vh 0 0 #fff,
+    30vw 40vh 0 0 #fff, 60vw 50vh 0 0 #fff, 90vw 60vh 0 0 #fff,
+    20vw 70vh 0 0 #fff, 70vw 80vh 0 0 #fff, 40vw 90vh 0 0 #fff;
+  animation: twinkle 1.5s infinite;
+}
+
+.stars::after {
+  animation-delay: 0.5s;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.hearts {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hearts .heart {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: #ff5fa2;
+  transform: rotate(-45deg);
+  animation: float 10s infinite;
+}
+
+.hearts .heart::before,
+.hearts .heart::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #ff5fa2;
+  border-radius: 50%;
+}
+
+.hearts .heart::before {
+  top: -10px;
+  left: 0;
+}
+
+.hearts .heart::after {
+  top: 0;
+  left: 10px;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(100vh) rotate(-45deg) scale(0);
+  }
+  100% {
+    transform: translateY(-10vh) rotate(-45deg) scale(1);
+  }
+}
+
+.hearts .heart:nth-child(1) { left: 10%; animation-delay: 0s; }
+.hearts .heart:nth-child(2) { left: 20%; animation-delay: 2s; }
+.hearts .heart:nth-child(3) { left: 30%; animation-delay: 4s; }
+.hearts .heart:nth-child(4) { left: 40%; animation-delay: 6s; }
+.hearts .heart:nth-child(5) { left: 50%; animation-delay: 8s; }
+.hearts .heart:nth-child(6) { left: 60%; animation-delay: 10s; }
+.hearts .heart:nth-child(7) { left: 70%; animation-delay: 12s; }
+.hearts .heart:nth-child(8) { left: 80%; animation-delay: 14s; }
+.hearts .heart:nth-child(9) { left: 90%; animation-delay: 16s; }
+
+
+@media (max-width: 768px) {
+  .countdown-number {
+    font-size: 30vw;
+  }
+  .countdown-message {
+    font-size: 8vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .countdown-number {
+    font-size: 35vw;
+  }
+  .countdown-message {
+    font-size: 10vw;
+  }
+  .moon {
+    width: 60px;
+    height: 60px;
+  }
+}
+</style>
 </head>
 <body class="step-0">
+
+<div id="countdown-overlay">
+  <div class="countdown-background-animations">
+    <div class="moon"></div>
+    <div class="stars"></div>
+    <div class="hearts">
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+  </div>
+  </div>
+  <div id="countdown-container"></div>
+</div>
+
+<audio id="cheer-sound" src="music/mixkit-girls-audience-applause-510.wav"></audio> <!-- Add your cheer sound path here -->
 
 <canvas id="stars-3d"></canvas>
 <canvas id="bg-particles"></canvas>
@@ -1947,6 +2196,55 @@ window.addEventListener('resize', ()=>{
 });
 
 goTo(0);
+</script>
+<script>
+window.onload = function() {
+  const countdownOverlay = document.getElementById('countdown-overlay');
+  const countdownContainer = document.getElementById('countdown-container');
+  const cheerSound = document.getElementById('cheer-sound');
+  const countdownNumbers = [5, 4, 3, 2, 1];
+  const finalMessage = "Happy Birthday Vaishu";
+
+  let currentIndex = 0;
+
+  function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.pitch = 1.2;
+    utterance.rate = 0.8;
+    speechSynthesis.speak(utterance);
+  }
+
+  function showNextNumber() {
+    if (currentIndex < countdownNumbers.length) {
+      const number = countdownNumbers[currentIndex];
+      countdownContainer.innerHTML = `<div class="countdown-number">${number}</div>`;
+      speak(number);
+      currentIndex++;
+      setTimeout(showNextNumber, 1000);
+    } else {
+      countdownContainer.innerHTML = `<div class="countdown-message"></div>`;
+      const messageContainer = countdownContainer.querySelector('.countdown-message');
+
+      finalMessage.split('').forEach((char, index) => {
+          const letterSpan = document.createElement('span');
+          letterSpan.className = 'letter';
+          letterSpan.textContent = char === ' ' ? '\u00A0' : char;
+          letterSpan.style.animationDelay = `${index * 0.1}s`;
+          messageContainer.appendChild(letterSpan);
+      });
+      
+      speak(finalMessage);
+      if (cheerSound.src) {
+        cheerSound.play().catch(e => console.error("Audio playback failed:", e));
+      }
+      setTimeout(() => {
+        countdownOverlay.style.display = 'none';
+      }, 2000 + finalMessage.length * 100);
+    }
+  }
+
+  showNextNumber();
+};
 </script>
 </body>
 </html>
