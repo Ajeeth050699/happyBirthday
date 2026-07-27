@@ -132,10 +132,11 @@ h1.display .heart{color:var(--accent); display:inline-block; animation:pulse 1.8
 
 .btn{margin-top:2.2rem; position:relative; padding:.9rem 2.1rem; border-radius:999px; background:var(--glass-bg);
   border:1px solid var(--glass-border); backdrop-filter:blur(14px); color:var(--paper); font-family:'Poppins'; font-size:.78rem;
-  letter-spacing:.1em; text-transform:uppercase; cursor:none; overflow:hidden; transition:transform .35s ease, box-shadow .35s ease, background .35s ease, opacity .35s ease;
+  letter-spacing:.1em; text-transform:uppercase; cursor:none; overflow:hidden; transition:box-shadow .35s ease, background .35s ease, opacity .35s ease; /* Removed transform transition */
   display: flex;
   align-items: center;
   justify-content: center;
+  animation:btnShake 2s ease-in-out infinite alternate; /* Continuous shake animation */
 }
 body.touch .btn{cursor:pointer;}
 .btn::before{content:''; position:absolute; inset:-2px; border-radius:999px; padding:1px;
@@ -143,7 +144,8 @@ body.touch .btn{cursor:pointer;}
   -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude;
   animation:borderflow 5s linear infinite;}
 @keyframes borderflow{0%{background-position:0% 50%}100%{background-position:300% 50%}}
-.btn:active, .btn:hover{box-shadow:0 8px 40px rgba(240,160,188,.4); background:rgba(255,255,255,.16);}
+.btn:active{box-shadow:0 8px 40px rgba(240,160,188,.4); background:rgba(255,255,255,.16);} /* Removed animation from active */
+.btn:hover{box-shadow:0 8px 40px rgba(240,160,188,.4); background:rgba(255,255,255,.16);} /* Removed transform from hover */
 .btn span{position:relative; z-index:2; display:inline-flex; align-items:center; gap:.4rem;}
 .btn.big{padding:1.15rem 2.6rem; font-size:.85rem;}
 
@@ -188,7 +190,9 @@ body.touch .progress-dots .dot{cursor:pointer;}
   background:var(--glass-bg); border:1px solid var(--glass-border); backdrop-filter:blur(16px); padding:.5rem .85rem; border-radius:999px;
   box-shadow:0 8px 30px rgba(0,0,0,.15); transition:opacity .5s ease, transform .5s ease; opacity:0; transform:translateY(-10px); pointer-events:none;}
 .music-player.show{opacity:1; transform:translateY(0); pointer-events:auto;}
-.music-player button{background:none; border:none; color:var(--paper); cursor:none; font-size:.95rem; display:flex;}
+.music-player button{background:none; border:none; color:var(--paper); cursor:none; font-size:.95rem; display:flex; transition:transform .3s ease;}
+body.touch .music-player button{cursor:pointer;}
+.music-player button:hover{transform:scale(1.1);}
 body.touch .music-player button{cursor:pointer;}
 .music-player .track{font-family:'Cormorant Garamond'; font-style:italic; font-size:.74rem; color:rgba(255,248,240,.85); max-width:110px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 .music-player input[type=range]{width:52px; accent-color:var(--rose);}
@@ -379,7 +383,9 @@ body.touch .wax-seal{cursor:pointer;}
 .letter-scroll p{opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.3,1);}
 .letter-scroll p.in{opacity:1; transform:translateY(0);}
 .letter-close{position:absolute; top:10px; right:12px; z-index:5; background:rgba(0,0,0,.08); border:none; width:32px; height:32px; border-radius:50%;
-  color:#7a4a5c; font-size:1rem; cursor:none;}
+  color:#7a4a5c; font-size:1rem; cursor:none; transition:transform .3s ease;}
+body.touch .letter-close{cursor:pointer;}
+.letter-close:hover{transform:scale(1.1);}
 body.touch .letter-close{cursor:pointer;}
 .letter-scroll{overflow-y:auto; -webkit-overflow-scrolling:touch; padding:2.4rem 2rem 2rem; color:#4a2c38;}
 .letter-heading{font-family:'Great Vibes', cursive; font-size:clamp(1.8rem,6vw,2.4rem); color:#a5314f; text-align:center; margin-bottom:1.2rem;}
@@ -463,10 +469,14 @@ body.touch .memory-card{cursor:pointer;}
 .lightbox-frame img.in{opacity:1; transform:scale(1);}
 .lightbox-cap{font-family:'Cormorant Garamond'; font-style:italic; color:var(--paper); text-align:center; margin-top:1rem; font-size:clamp(.9rem,2.6vw,1.1rem); max-width:90%; text-shadow:0 2px 10px rgba(0,0,0,.6);}
 .lightbox-close{position:absolute; top:-14px; right:-14px; z-index:5; background:rgba(255,255,255,.14); border:1px solid var(--glass-border); width:36px; height:36px;
-  border-radius:50%; color:#fff; font-size:1rem; cursor:none; backdrop-filter:blur(10px);}
+  border-radius:50%; color:#fff; font-size:1rem; cursor:none; backdrop-filter:blur(10px); transition:transform .3s ease;}
+body.touch .lightbox-close{cursor:pointer;}
+.lightbox-close:hover{transform:scale(1.1);}
 body.touch .lightbox-close{cursor:pointer;}
 .lightbox-nav{position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.14); border:1px solid var(--glass-border);
-  width:42px; height:42px; border-radius:50%; color:#fff; font-size:1.2rem; cursor:none; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(10px);}
+  width:42px; height:42px; border-radius:50%; color:#fff; font-size:1.2rem; cursor:none; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(10px); transition:transform .3s ease;}
+body.touch .lightbox-nav{cursor:pointer;}
+.lightbox-nav:hover{transform:translateY(-50%) scale(1.1);}
 body.touch .lightbox-nav{cursor:pointer;}
 .lightbox-nav.prevL{left:-6px;} .lightbox-nav.nextL{right:-6px;}
 @media(max-width:640px){.lightbox-nav{width:36px;height:36px;font-size:1rem;} .lightbox-nav.prevL{left:-4px;} .lightbox-nav.nextL{right:-4px;}}
@@ -918,7 +928,9 @@ body.touch .quote-controls button{cursor:pointer;}
     <div class="heart"></div>
   </div>
   </div>
-  <div id="countdown-container"></div>
+  <div id="countdown-container">
+    <div class="countdown-message" style="font-size: 5vw; cursor: pointer;">Tap to Start</div>
+  </div>
 </div>
 
 <audio id="cheer-sound" src="music/mixkit-girls-audience-applause-510.wav"></audio> <!-- Add your cheer sound path here -->
@@ -2214,7 +2226,7 @@ window.addEventListener('resize', ()=>{
 goTo(0);
 </script>
 <script>
-window.onload = function() {
+document.addEventListener('DOMContentLoaded', function() {
   const countdownOverlay = document.getElementById('countdown-overlay');
   const countdownContainer = document.getElementById('countdown-container');
   const cheerSound = document.getElementById('cheer-sound');
@@ -2224,9 +2236,12 @@ window.onload = function() {
   let currentIndex = 0;
 
   function speak(text) {
+    // Wait for voices to be loaded
+    const voices = speechSynthesis.getVoices();
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.pitch = 1.2;
     utterance.rate = 0.8;
+    // You might want to select a specific voice here
     speechSynthesis.speak(utterance);
   }
 
@@ -2254,13 +2269,29 @@ window.onload = function() {
         cheerSound.play().catch(e => console.error("Audio playback failed:", e));
       }
       setTimeout(() => {
-        countdownOverlay.style.display = 'none';
+        countdownOverlay.style.transition = 'opacity 1s ease';
+        countdownOverlay.style.opacity = '0';
+        setTimeout(() => {
+          countdownOverlay.style.display = 'none';
+        }, 1000);
       }, 2000 + finalMessage.length * 100);
     }
   }
 
-  showNextNumber();
-};
+  countdownOverlay.addEventListener('click', function() {
+    // Pre-load the main audio to ensure it's ready after the countdown
+    const audioEl = document.getElementById('audioEl');
+    if (audioEl) {
+      audioEl.load();
+    }
+    cheerSound.load();
+    // Some browsers require a 'warm-up' play/pause for speech synthesis
+    speechSynthesis.speak(new SpeechSynthesisUtterance(' '));
+    speechSynthesis.cancel();
+    
+    showNextNumber();
+  }, { once: true });
+});
 </script>
 </body>
 </html>
