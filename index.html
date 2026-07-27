@@ -85,7 +85,8 @@ body.touch .cursor-dot{display:none;}
 .scene{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column;
   text-align:center; opacity:0; visibility:hidden; transform:var(--enter-tf, scale(1.04));
   transition:opacity var(--scene-transition), transform var(--scene-transition), visibility 0s linear 1.3s;
-  padding:min(9vh,60px) 6vw 12vh;}
+  padding:min(9vh,60px) 6vw 12vh;
+  overflow-y:auto; -webkit-overflow-scrolling:touch;}
 .scene.active{opacity:1; visibility:visible; transform:none; transition:opacity var(--scene-transition), transform var(--scene-transition);}
 .scene-scroll{overflow-y:auto; -webkit-overflow-scrolling:touch; max-height:100%; width:100%; display:flex; flex-direction:column; align-items:center;}
 
@@ -243,6 +244,42 @@ body.touch .flower{cursor:pointer;}
   text-shadow:0 2px 12px rgba(0,0,0,.55);}
 .flower-label.show{opacity:1; transform:translateY(0) scale(1);}
 
+/* ---------- FLOWER REVEAL — big fantabulous popup shown when a flower is picked ---------- */
+.flower-reveal-overlay{position:fixed; inset:0; z-index:115; display:flex; align-items:center; justify-content:center;
+  pointer-events:none; opacity:0; visibility:hidden; padding:6vw;
+  background:radial-gradient(circle at 50% 48%, rgba(30,14,26,.32), rgba(8,5,14,.6) 72%);
+  transition:opacity .45s ease, visibility 0s linear .45s;}
+.flower-reveal-overlay.show{opacity:1; visibility:visible; transition:opacity .35s ease;}
+.flower-reveal-card{position:relative; display:flex; flex-direction:column; align-items:center; gap:.7rem;
+  padding:clamp(1.8rem,6vw,3rem) clamp(2.2rem,8vw,3.8rem); border-radius:32px;
+  background:linear-gradient(160deg, rgba(255,255,255,.14), rgba(255,255,255,.05)), var(--glass-bg);
+  border:1px solid rgba(255,255,255,.5); backdrop-filter:blur(20px);
+  box-shadow:0 40px 100px rgba(0,0,0,.55), 0 0 90px rgba(240,160,188,.4), inset 0 1px 0 rgba(255,255,255,.4);
+  transform:scale(.25) rotate(-10deg); opacity:0; max-width:min(92vw,440px);}
+.flower-reveal-card::before{content:''; position:absolute; inset:-2px; border-radius:34px; padding:2px; z-index:-1;
+  background:linear-gradient(120deg, var(--rose), var(--gold), var(--blush), var(--rose)); background-size:300% 300%;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude;
+  animation:borderflow 4s linear infinite;}
+.flower-reveal-card.pop{animation:flowerRevealPop 1.15s cubic-bezier(.2,1.5,.3,1) forwards;}
+@keyframes flowerRevealPop{
+  0%{transform:scale(.15) rotate(-16deg); opacity:0; filter:blur(14px);}
+  48%{transform:scale(1.18) rotate(5deg); opacity:1; filter:blur(0);}
+  68%{transform:scale(.92) rotate(-2.5deg);}
+  84%{transform:scale(1.04) rotate(1deg);}
+  100%{transform:scale(1) rotate(0deg); opacity:1;}
+}
+.flower-reveal-emoji{font-size:clamp(3rem,11vw,4.6rem); line-height:1;
+  animation:flowerEmojiBounce 1.7s ease-in-out .3s infinite; filter:drop-shadow(0 8px 20px rgba(0,0,0,.4));}
+@keyframes flowerEmojiBounce{0%,100%{transform:translateY(0) scale(1) rotate(0);}50%{transform:translateY(-12px) scale(1.14) rotate(-4deg);}}
+.flower-reveal-text{font-family:'Great Vibes', cursive; font-size:clamp(1.8rem,7vw,2.9rem); color:#fff; text-align:center;
+  text-shadow:0 2px 16px rgba(0,0,0,.7), 0 0 30px rgba(240,160,188,.5); line-height:1.15;}
+.flower-reveal-sub{font-family:'Cormorant Garamond'; font-style:italic; font-size:clamp(.8rem,2.4vw,.98rem); color:rgba(255,248,240,.85);
+  text-shadow:0 2px 8px rgba(0,0,0,.55); letter-spacing:.02em;}
+.flower-reveal-sparkles{position:absolute; inset:-40px; pointer-events:none; overflow:visible;}
+.flower-reveal-progress{display:flex; gap:6px; margin-top:.3rem;}
+.flower-reveal-progress span{width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.28); transition:background .3s ease, transform .3s ease;}
+.flower-reveal-progress span.filled{background:var(--rose); transform:scale(1.2); box-shadow:0 0 10px rgba(240,160,188,.8);}
+
 .bouquet-vase{position:relative; width:clamp(84px,18vw,110px); height:clamp(96px,20vw,124px); margin:0 auto -.3rem; display:flex; align-items:flex-end; justify-content:center;}
 #vaseSvg{width:66%; height:66%; filter:drop-shadow(0 8px 18px rgba(0,0,0,.4));}
 .bouquet-slots{position:absolute; bottom:52%; left:50%; transform:translateX(-50%); width:170%; height:64px; pointer-events:none;}
@@ -379,7 +416,7 @@ body.touch .letter-close{cursor:pointer;}
 @keyframes bulbTwinkle{0%,100%{opacity:.45; transform:scale(.85);}50%{opacity:1; transform:scale(1.15);}}
 
 /* ---------- STEP 6 : MEMORY WALL ---------- */
-.memories-wrap{width:min(1000px,94vw);}
+.memories-wrap{width:min(1000px,94vw); max-height:100%; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:2rem;}
 .memory-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:1.1rem 1rem; margin-top:1.6rem; perspective:1200px;}
 @media(min-width:640px){.memory-grid{grid-template-columns:repeat(4,1fr); gap:1.6rem 1.4rem;}}
 .memory-card{position:relative; aspect-ratio:3/4; border-radius:10px; overflow:hidden; cursor:none; border:6px solid #fffaf3;
@@ -401,6 +438,9 @@ body.touch .memory-card{cursor:pointer;}
   backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; font-size:.7rem; color:#fff; opacity:0; transition:opacity .3s ease;}
 .memory-card:hover .zoom-hint{opacity:1;}
 .memory-note{font-family:'Poppins'; font-size:.68rem; color:rgba(255,248,240,.6); margin-top:1.5rem; text-shadow:0 2px 8px rgba(0,0,0,.5);}
+.memory-surprise-btn{margin-top:.4rem;}
+.memory-surprise-btn .dice{display:inline-block;}
+.memory-surprise-btn .dice.spin{animation:diceSpin .6s cubic-bezier(.3,.8,.3,1);}
 
 /* ---------- LIGHTBOX ---------- */
 .lightbox{position:fixed; inset:0; z-index:130; display:flex; align-items:center; justify-content:center;
@@ -436,6 +476,9 @@ body.touch .lightbox-nav{cursor:pointer;}
 .quote-controls button{background:var(--glass-bg); border:1px solid var(--glass-border); color:var(--paper); width:36px; height:36px; border-radius:50%; cursor:none; backdrop-filter:blur(10px); transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
 .quote-controls button:hover{transform:scale(1.1);}
 body.touch .quote-controls button{cursor:pointer;}
+.quote-controls .quote-surprise{width:auto; border-radius:999px; padding:0 .9rem; font-family:'Poppins'; font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; display:inline-flex; align-items:center; gap:.35rem;}
+.quote-controls .quote-surprise .dice{display:inline-block;}
+.quote-controls .quote-surprise .dice.spin{animation:diceSpin .6s cubic-bezier(.3,.8,.3,1);}
 .iloveyou-row{display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; margin-top:1.6rem; max-width:520px;}
 .iloveyou-chip{font-family:'Great Vibes', cursive; font-size:clamp(1.1rem,3.4vw,1.5rem); color:var(--rose); background:rgba(255,255,255,.08);
   border:1px solid var(--glass-border); padding:.35rem 1rem; border-radius:999px; backdrop-filter:blur(8px);}
@@ -471,6 +514,7 @@ body.touch .quote-controls button{cursor:pointer;}
 #scene-final h1.display{margin-top:.5rem; opacity:0;}
 #scene-final .signature{font-family:'Great Vibes', cursive; font-size:clamp(1.5rem,5vw,2.1rem); margin-top:1.3rem; color:var(--rose);}
 #scene-final .closing{font-family:'Cormorant Garamond'; font-style:italic; font-size:clamp(1rem,2.6vw,1.3rem); color:rgba(255,248,240,.8); margin-top:2rem; max-width:560px;}
+#scene-final .replay-btn{margin-top:1.6rem;}
 .marquee{position:absolute; bottom:8%; left:0; right:0; overflow:hidden; white-space:nowrap; opacity:.35; pointer-events:none;}
 .marquee span{display:inline-block; font-family:'Great Vibes', cursive; font-size:clamp(1.2rem,4vw,1.8rem); color:var(--rose); padding-right:2rem; animation:scrollLeft 22s linear infinite;}
 @keyframes scrollLeft{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
@@ -490,11 +534,19 @@ body.touch .quote-controls button{cursor:pointer;}
   .song-admiring{width:min(210px,64vw); max-height:22vh;}
   .song-card{width:clamp(96px,30vw,120px); padding:.8rem .5rem .85rem;}
   .song-disc{width:48px; height:48px;}
-  .letter-layout{display:flex; flex-direction:column; align-items:center; gap:.25rem; margin-top:.7rem;}
-  .envelope-stage{order:1; justify-self:auto;}
-  .letter-guy{order:2; width:min(190px,48vw); max-height:28vh; margin:-.5rem 0 0 auto; align-self:flex-end;}
+
+  /* Love letter — keep envelope + companion image SIDE BY SIDE on mobile
+     (previously stacked column, causing the guy to sit above/below and
+     get cropped by the scene). Now a compact row that fits one screen. */
+  .letter-layout{display:flex; flex-direction:row; flex-wrap:nowrap; align-items:flex-end; justify-content:center;
+    gap:.4rem; margin-top:.6rem; width:100%;}
+  .envelope-stage{order:1; flex:0 0 auto; justify-self:auto;}
+  .envelope{width:min(190px,54vw); height:min(125px,35vw);}
+  .wax-seal{width:38px; height:38px; font-size:.85rem;}
+  .letter-guy{order:2; flex:0 0 auto; width:min(150px,38vw); max-height:30vh; margin:0 0 0 -.6rem; align-self:flex-end;}
   .letter-modal{flex-direction:column-reverse; gap:.4rem;}
   .letter-modal-companion{width:min(120px,34vw); max-height:16vh;}
+
   .timeline-layout{display:flex; flex-direction:column; gap:.55rem; margin-top:.7rem;}
   .timeline-couple{width:min(260px,76vw); max-height:27vh; order:-1;}
   .reasons-layout{display:flex; flex-direction:column-reverse; gap:.5rem; margin-top:.6rem;}
@@ -504,8 +556,13 @@ body.touch .quote-controls button{cursor:pointer;}
   .candle-girl{width:min(140px,36vw); max-height:29vh; margin-left:-.7rem;}
   .blow-wind{left:38%; top:24%; width:40%; height:34%;}
   .final-photo{max-width:min(190px,58vw); max-height:22vh;}
+
+  /* Memory wall — allow the grid to actually scroll on small screens
+     instead of being clipped top/bottom inside the fixed-height scene */
+  .memories-wrap{max-height:78vh; padding-bottom:5rem;}
   .memory-grid{gap:.8rem .7rem;}
   .memory-card{border-width:4px; border-radius:7px;}
+
   .lightbox-frame{border-width:5px;}
   .lightbox-stage{width:94vw;}
   .lightbox-nav{width:34px;height:34px;font-size:.95rem;}
@@ -530,7 +587,8 @@ body.touch .quote-controls button{cursor:pointer;}
   .timeline-wrap{margin-top:1rem;}
   .tl-items{gap:.85rem;}
   .constellation{width:88vw;}
-  .letter-guy{width:min(165px,45vw);}
+  .letter-guy{width:min(125px,34vw);}
+  .envelope{width:min(165px,50vw); height:min(110px,32vw);}
   .cake-wrap{width:min(205px,57vw);}
   .candle-girl{width:min(122px,35vw);}
   .reasons-photo{max-width:min(210px,64vw);}
@@ -621,7 +679,7 @@ body.touch .quote-controls button{cursor:pointer;}
         </div>
         <div class="flowers" id="flowerRow"></div>
         <p class="flower-label" id="flowerLabel"></p>
-        <p class="scene-hint" id="hint-2"><span class="hint-emoji">🌸</span><span id="gardenHintText">pluck a flower for her, baby</span></p>
+        <p class="scene-hint" id="hint-2"><span class="hint-emoji">🌸</span><span id="gardenHintText">pluck a flower for her, one by one, baby</span></p>
       </div>
     </div>
     <button class="btn locked" data-goto="3"><span>Continue ✦</span></button>
@@ -691,6 +749,7 @@ body.touch .quote-controls button{cursor:pointer;}
       <p class="scene-hint" id="hint-6"><span class="hint-emoji">📸</span> tap a memory to relive it</p>
       <div class="fairy-lights" id="fairyLights"></div>
       <div class="memory-grid" id="memoryGrid"></div>
+      <button class="btn memory-surprise-btn" id="memorySurpriseBtn"><span><span class="dice">🎲</span> Surprise Memory</span></button>
       <button class="btn locked" data-goto="7"><span>Continue ✦</span></button>
     </div>
   </section>
@@ -707,6 +766,7 @@ body.touch .quote-controls button{cursor:pointer;}
         </div>
         <div class="quote-controls">
           <button id="quotePrev">‹</button>
+          <button class="quote-surprise" id="quoteSurprise"><span class="dice">🎲</span> Surprise</button>
           <button id="quoteNext">›</button>
         </div>
         <p class="scene-hint no-gate"><span class="hint-emoji">✨</span> tap ‹ › for more reasons I love you</p>
@@ -741,10 +801,21 @@ body.touch .quote-controls button{cursor:pointer;}
     <h1 class="display">Happy Birthday<br>My Vaishu</h1>
     <p class="signature">Forever Yours, Ajeeth</p>
     <p class="closing">"Some stories don't have an ending... Ours is just beginning."</p>
+    <button class="btn replay-btn" id="replayFireworksBtn"><span><span class="dice">✨</span> Surprise Fireworks</span></button>
     <div class="marquee"><span id="marqueeText"></span></div>
   </section>
 
 </main>
+
+<div class="flower-reveal-overlay" id="flowerRevealOverlay">
+  <div class="flower-reveal-card" id="flowerRevealCard">
+    <div class="flower-reveal-emoji" id="flowerRevealEmoji">🌸</div>
+    <p class="flower-reveal-text" id="flowerRevealText"></p>
+    <p class="flower-reveal-sub" id="flowerRevealSub">a little thing I adore about you</p>
+    <div class="flower-reveal-progress" id="flowerRevealProgress"></div>
+    <div class="flower-reveal-sparkles" id="flowerRevealSparkles"></div>
+  </div>
+</div>
 
 <div class="letter-modal" id="letterModal">
   <div class="letter-card">
@@ -840,6 +911,20 @@ const dotEls = dotsWrap.querySelectorAll('.dot');
 function goTo(n){
   if(n<0||n>=TOTAL_STEPS||n===step||isAnimating) return;
   isAnimating = true;
+
+  /* Leaving the "Our Song" scene: stop whichever gift-song is playing and
+     bring the default background song ("So Many Things I Do") back in
+     automatically, so the music never just goes silent between scenes. */
+  if(step===3 && n!==3){
+    songCards.forEach(c=> c.classList.remove('playing'));
+    giftAudio.pause();
+    if(audioEl.paused){
+      audioEl.play().catch(()=>{});
+    }
+    musicPlayer.classList.remove('paused');
+    playBtn.textContent = '❚❚';
+  }
+
   const wasCineDeep = body.classList.contains('cine-deep');
   scenes.forEach(s=> s.classList.toggle('active', +s.dataset.step===n));
   body.className = (isTouch?'touch ':'') + 'step-'+n + (n===7 && wasCineDeep ? ' cine-deep' : '');
@@ -1083,16 +1168,17 @@ function revealTimeline(){
 
 /* =========================================================
    FLOWERS — "Build Her Bouquet"
+   Each pick now opens a big fantabulous popup card (emoji + line +
+   sparkles) instead of the old small caption underneath the flowers.
 ========================================================= */
 const flowerRow = document.getElementById('flowerRow');
-const flowerLabel = document.getElementById('flowerLabel');
 const gardenHintText = document.getElementById('gardenHintText');
 const bouquetVase = document.getElementById('bouquetVase');
 const bouquetSlots = document.getElementById('bouquetSlots');
 const flowerColors = ['#f2a4c0','#f7c98a','#e8a0b4','#c9a0e8','#f4dba0'];
 const flowerLoves = ["Your smile","Your laugh","Your kindness","Your strength","Your eyes"];
+const flowerEmojis = ['😊','😂','💖','💪✨','👁️💫'];
 const slotAngles = [-34,-16,0,16,34];
-let flowerLabelTimer = null;
 let pickedCount = 0;
 
 function flowerSVG(c){
@@ -1100,6 +1186,59 @@ function flowerSVG(c){
     <circle cx="32" cy="44" r="10"/><circle cx="20" cy="32" r="10"/></g><circle cx="32" cy="32" r="8" fill="#fff3d0"/></svg>`;
 }
 
+/* ---- Big flower-reveal popup ---- */
+const flowerRevealOverlay = document.getElementById('flowerRevealOverlay');
+const flowerRevealCard = document.getElementById('flowerRevealCard');
+const flowerRevealEmoji = document.getElementById('flowerRevealEmoji');
+const flowerRevealText = document.getElementById('flowerRevealText');
+const flowerRevealSparkles = document.getElementById('flowerRevealSparkles');
+const flowerRevealProgress = document.getElementById('flowerRevealProgress');
+let flowerRevealTimer = null;
+
+/* build the little progress dots (one per flower) once */
+flowerColors.forEach(()=>{
+  const dot = document.createElement('span');
+  flowerRevealProgress.appendChild(dot);
+});
+
+function updateFlowerRevealProgress(count){
+  flowerRevealProgress.querySelectorAll('span').forEach((s,i)=> s.classList.toggle('filled', i<count));
+}
+
+function spawnRevealSparkles(){
+  flowerRevealSparkles.innerHTML = '';
+  const glyphs = ['✨','💖','🌸','⭐','♥'];
+  const total = 14;
+  for(let i=0;i<total;i++){
+    const s = document.createElement('span');
+    s.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+    const ang = (Math.PI*2/total)*i + Math.random()*0.4;
+    const dist = 90 + Math.random()*70;
+    s.style.cssText = `position:absolute; left:50%; top:50%; font-size:${0.8+Math.random()*0.9}rem;
+      opacity:0; transform:translate(-50%,-50%) scale(.2); pointer-events:none;
+      transition:transform .9s cubic-bezier(.2,.8,.3,1), opacity .9s ease;`;
+    flowerRevealSparkles.appendChild(s);
+    requestAnimationFrame(()=>{
+      s.style.opacity = '1';
+      s.style.transform = `translate(calc(-50% + ${Math.cos(ang)*dist}px), calc(-50% + ${Math.sin(ang)*dist}px)) scale(1) rotate(${Math.random()*60-30}deg)`;
+      setTimeout(()=>{ s.style.opacity='0'; }, 650);
+    });
+  }
+}
+
+function showFlowerReveal(text, emoji, count){
+  flowerRevealEmoji.textContent = emoji;
+  flowerRevealText.textContent = text + ' ❤';
+  updateFlowerRevealProgress(count);
+  flowerRevealOverlay.classList.add('show');
+  flowerRevealCard.classList.remove('pop'); void flowerRevealCard.offsetWidth; flowerRevealCard.classList.add('pop');
+  spawnRevealSparkles();
+  clearTimeout(flowerRevealTimer);
+  flowerRevealTimer = setTimeout(()=> flowerRevealOverlay.classList.remove('show'), 2200);
+}
+flowerRevealOverlay.addEventListener('click', ()=>{ clearTimeout(flowerRevealTimer); flowerRevealOverlay.classList.remove('show'); });
+
+const flowerEls = [];
 flowerColors.forEach((c,i)=>{
   const f = document.createElement('div');
   f.className='flower'; f.title=flowerLoves[i];
@@ -1109,12 +1248,11 @@ flowerColors.forEach((c,i)=>{
     const now = Date.now();
     if(done || now - lastFire < 350) return;
     lastFire = now; done = true;
+    f.dataset.done = '1';
     if(ev) ev.preventDefault && ev.preventDefault();
 
-    flowerLabel.textContent = flowerLoves[i] + ' ❤';
-    flowerLabel.classList.remove('show'); void flowerLabel.offsetWidth; flowerLabel.classList.add('show');
-    clearTimeout(flowerLabelTimer);
-    flowerLabelTimer = setTimeout(()=> flowerLabel.classList.remove('show'), 2200);
+    pickedCount++;
+    showFlowerReveal(flowerLoves[i], flowerEmojis[i], pickedCount);
 
     const startR = f.getBoundingClientRect();
     const vaseR = bouquetVase.getBoundingClientRect();
@@ -1151,7 +1289,6 @@ flowerColors.forEach((c,i)=>{
       requestAnimationFrame(()=> slot.classList.add('show'));
     }, 720);
 
-    pickedCount++;
     if(pickedCount < flowerColors.length){
       gardenHintText.textContent = pickedCount + ' of ' + flowerColors.length + ' picked — keep going, baby ❤';
     } else {
@@ -1162,6 +1299,8 @@ flowerColors.forEach((c,i)=>{
   f.addEventListener('touchstart', pluck, {passive:false});
   f.addEventListener('mouseenter', ()=>{ if(!isTouch && !done) f.classList.add('peek'); });
   f.addEventListener('mouseleave', ()=> f.classList.remove('peek'));
+  f._pluck = pluck;
+  flowerEls.push(f);
   flowerRow.appendChild(f);
 });
 
@@ -1309,6 +1448,15 @@ function revealMemoryGrid(){
   document.getElementById('fairyLights').classList.add('lit');
 }
 
+/* Surprise Memory — jumps straight to a random memory in the lightbox,
+   which also satisfies this scene's "view a memory" gate */
+document.getElementById('memorySurpriseBtn').addEventListener('click', function(){
+  const dice = this.querySelector('.dice');
+  dice.classList.remove('spin'); void dice.offsetWidth; dice.classList.add('spin');
+  const idx = Math.floor(Math.random()*memories.length);
+  setTimeout(()=> openLightbox(idx), 150);
+});
+
 /* =========================================================
    LIGHTBOX
 ========================================================= */
@@ -1380,6 +1528,14 @@ function showQuote(i){
 function resetQuotes(){ qIdx=0; showQuote(qIdx); revealReasonsPhoto(); }
 document.getElementById('quoteNext').addEventListener('click', ()=>{ qIdx=(qIdx+1)%quotes.length; showQuote(qIdx); });
 document.getElementById('quotePrev').addEventListener('click', ()=>{ qIdx=(qIdx-1+quotes.length)%quotes.length; showQuote(qIdx); });
+document.getElementById('quoteSurprise').addEventListener('click', function(){
+  const dice = this.querySelector('.dice');
+  dice.classList.remove('spin'); void dice.offsetWidth; dice.classList.add('spin');
+  let next = qIdx;
+  while(next === qIdx) next = Math.floor(Math.random()*quotes.length);
+  qIdx = next;
+  showQuote(qIdx);
+});
 showQuote(0);
 
 let reasonsPhotoRevealed = false;
@@ -1591,6 +1747,17 @@ function dropPetal(){
   });
   setTimeout(()=>p.remove(),7500);
 }
+
+/* Surprise Fireworks — replays a fresh burst of fireworks + confetti on
+   demand from the final scene, without needing to reload the page */
+document.getElementById('replayFireworksBtn').addEventListener('click', function(){
+  const dice = this.querySelector('.dice');
+  dice.classList.remove('spin'); void dice.offsetWidth; dice.classList.add('spin');
+  burstConfetti();
+  for(let i=0;i<5;i++){
+    setTimeout(()=> fireworkBurst(Math.random()*innerWidth, innerHeight*0.15+Math.random()*innerHeight*0.4), i*260);
+  }
+});
 
 /* =========================================================
    2D AMBIENT PARTICLES
