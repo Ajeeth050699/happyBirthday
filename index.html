@@ -15,7 +15,7 @@
   --accent:#f0a0bc;
   --glass-bg: rgba(12,8,20,0.34);
   --glass-border: rgba(255,255,255,0.32);
-  --scene-transition: 1.3s cubic-bezier(.22,.61,.36,1);
+  --scene-transition: .8s cubic-bezier(.22,.61,.36,1);
   --vh: 1vh;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -51,13 +51,13 @@ body.step-9{--sky-top:#0c0e2e; --sky-mid:#10103a; --sky-bottom:#05061a;}
   background:
     radial-gradient(circle at 50% 46%, rgba(255,250,236,.62) 0 8%, rgba(244,201,138,.38) 18%, transparent 42%),
     conic-gradient(from 120deg at 50% 50%, transparent, rgba(255,232,210,.34), transparent, rgba(240,160,188,.24), transparent);
-  transform:scale(.82) rotate(-6deg); filter:blur(10px); mix-blend-mode:screen;}
-body.cine #sceneTransition{animation:irisBloom .95s cubic-bezier(.2,.8,.3,1) both;}
+  transform:scale(.82) rotate(-6deg); mix-blend-mode:screen; will-change:opacity, transform;}
+body.cine #sceneTransition{animation:irisBloom .65s cubic-bezier(.2,.8,.3,1) both;}
 body.cine-deep #sceneTransition{display:none;}
 @keyframes irisBloom{
-  0%{opacity:0; transform:scale(.55) rotate(-10deg); filter:blur(18px);}
-  42%{opacity:.92; transform:scale(1.02) rotate(0deg); filter:blur(7px);}
-  100%{opacity:0; transform:scale(1.32) rotate(8deg); filter:blur(18px);}
+  0%{opacity:0; transform:scale(.55) rotate(-10deg);}
+  42%{opacity:.82; transform:scale(1.02) rotate(0deg);}
+  100%{opacity:0; transform:scale(1.25) rotate(8deg);}
 }
 #sun{position:fixed; left:50%; top:14%; width:110px; height:110px; border-radius:50%;
   background: radial-gradient(circle, #fff6dd 0%, rgba(255,214,163,0.7) 45%, rgba(255,214,163,0) 72%);
@@ -84,23 +84,24 @@ body.touch .cursor-dot{display:none;}
 #scenes{position:relative; z-index:5; height: calc(var(--vh,1vh) * 100); width:100vw; perspective:1400px;}
 .scene{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column;
   text-align:center; opacity:0; visibility:hidden; transform:var(--enter-tf, scale(1.04));
-  transition:opacity var(--scene-transition), transform var(--scene-transition), visibility 0s linear 1.3s;
+  transition:opacity var(--scene-transition), transform var(--scene-transition), visibility 0s linear .8s;
   padding:min(9vh,60px) 6vw 12vh;
-  overflow-y:auto; -webkit-overflow-scrolling:touch;}
+  overflow-y:auto; -webkit-overflow-scrolling:touch; contain:layout paint; will-change:opacity, transform; pointer-events:none;}
 .scene.active{opacity:1; visibility:visible; transform:none; transition:opacity var(--scene-transition), transform var(--scene-transition);}
+.scene.active{pointer-events:auto;}
 .scene-scroll{overflow-y:auto; -webkit-overflow-scrolling:touch; max-height:100%; width:100%; display:flex; flex-direction:column; align-items:center;}
 
 /* a different cinematic entrance for every single scene, so no two transitions feel the same */
 #scene-gate{--enter-tf: scale(1.14);}
-#scene-night{--enter-tf: translateX(64px) rotateY(22deg); --scene-transition: 1.3s cubic-bezier(.22,.61,.36,1);}
-#scene-garden{--enter-tf: translateY(70px) scale(.88); --scene-transition: 1.15s cubic-bezier(.34,1.56,.64,1);}
-#scene-song{--enter-tf: rotate(-7deg) scale(.82); --scene-transition: 1.2s cubic-bezier(.4,0,.2,1);}
-#scene-letter{--enter-tf: translateX(-90px) rotateZ(-3deg); --scene-transition: 1.25s cubic-bezier(.22,.61,.36,1);}
-#scene-timeline{--enter-tf: scaleX(.3); --scene-transition: 1.3s cubic-bezier(.4,0,.2,1);}
-#scene-memories{--enter-tf: translateY(90px) scale(.92); --scene-transition: 1.2s cubic-bezier(.22,.61,.36,1);}
-#scene-reasons{--enter-tf: scale(1.22) rotate(3deg); --scene-transition: 1.15s cubic-bezier(.34,1.56,.64,1);}
-#scene-celebration{--enter-tf: translateY(-90px) scale(.85); --scene-transition: 1.3s cubic-bezier(.22,.61,.36,1);}
-#scene-final{--enter-tf: scale(1.35); --scene-transition: 1.5s cubic-bezier(.16,.84,.44,1);}
+#scene-night{--enter-tf: translateX(44px) rotateY(12deg); --scene-transition: .8s cubic-bezier(.22,.61,.36,1);}
+#scene-garden{--enter-tf: translateY(48px) scale(.94); --scene-transition: .75s cubic-bezier(.22,.61,.36,1);}
+#scene-song{--enter-tf: rotate(-3deg) scale(.94); --scene-transition: .78s cubic-bezier(.4,0,.2,1);}
+#scene-letter{--enter-tf: translateX(-54px) rotateZ(-2deg); --scene-transition: .8s cubic-bezier(.22,.61,.36,1);}
+#scene-timeline{--enter-tf: scaleX(.82); --scene-transition: .78s cubic-bezier(.4,0,.2,1);}
+#scene-memories{--enter-tf: translateY(56px) scale(.95); --scene-transition: .78s cubic-bezier(.22,.61,.36,1);}
+#scene-reasons{--enter-tf: scale(1.08) rotate(2deg); --scene-transition: .75s cubic-bezier(.22,.61,.36,1);}
+#scene-celebration{--enter-tf: translateY(-56px) scale(.94); --scene-transition: .8s cubic-bezier(.22,.61,.36,1);}
+#scene-final{--enter-tf: scale(1.12); --scene-transition: .9s cubic-bezier(.16,.84,.44,1);}
 
 /* cinematic scrim — keeps copy readable no matter how light the sky is behind it */
 .scene::before{content:''; position:absolute; left:50%; top:42%; width:min(1100px,120vw); height:min(900px,80vh);
@@ -427,8 +428,8 @@ body.touch .letter-close{cursor:pointer;}
 
 /* ---------- STEP 6 : MEMORY WALL ---------- */
 .memories-wrap{width:min(1000px,94vw); padding-bottom:2rem;}
-.memory-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:1.1rem 1rem; margin-top:1.6rem; perspective:1200px;}
-@media(min-width:640px){.memory-grid{grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1.6rem 1.4rem;}}
+.memory-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:1.1rem 1rem; margin-top:10rem; perspective:1200px;}
+@media(min-width:640px){.memory-grid{grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); margin-top:20rem; gap:1.6rem 1.4rem;}}
 .memory-card{position:relative; aspect-ratio:3/4; border-radius:10px; overflow:hidden; cursor:none; border:6px solid #fffaf3;
   background:#fffaf3; transform-style:preserve-3d; box-shadow:0 14px 30px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.2);
   opacity:0; transform:translateY(40px) scale(.85) rotate(var(--tilt,0deg));
@@ -583,7 +584,7 @@ body.touch .quote-controls button{cursor:pointer;}
   /* Memory wall — allow the grid to actually scroll on small screens
      instead of being clipped top/bottom inside the fixed-height scene */
   .memories-wrap{padding-bottom:5rem;}
-  .memory-grid{gap:.8rem .7rem;}
+  .memory-grid{gap:.8rem .7rem;  margin-top:25rem;}
   .memory-card{border-width:4px; border-radius:7px;}
 
   .lightbox-frame{border-width:5px;}
@@ -1221,6 +1222,10 @@ if(isTouch) document.body.classList.add('touch');
 ========================================================= */
 const TOTAL_STEPS = 10;
 let step = 0, isAnimating = false;
+const perf = {
+  lowMotion: isTouch || matchMedia('(max-width: 700px)').matches,
+  lastClickFx: 0
+};
 const body = document.body;
 const scenes = document.querySelectorAll('.scene');
 const dotsWrap = document.getElementById('dots');
@@ -1240,6 +1245,7 @@ const dotEls = dotsWrap.querySelectorAll('.dot');
 function goTo(n){
   if(n<0||n>=TOTAL_STEPS||n===step||isAnimating) return;
   isAnimating = true;
+  body.classList.add('is-transitioning');
 
   /* Leaving the "Our Song" scene: stop whichever gift-song is playing and
      bring the default background song ("So Many Things I Do") back in
@@ -1256,14 +1262,17 @@ function goTo(n){
 
   const wasCineDeep = body.classList.contains('cine-deep');
   scenes.forEach(s=> s.classList.toggle('active', +s.dataset.step===n));
-  body.className = (isTouch?'touch ':'') + 'step-'+n + (n===7 && wasCineDeep ? ' cine-deep' : '');
+  body.className = (isTouch?'touch ':'') + 'step-'+n + ' is-transitioning' + (n===7 && wasCineDeep ? ' cine-deep' : '');
   dotEls.forEach((d,i)=> d.classList.toggle('active', i===n));
   prevArrow.classList.toggle('hide', n===0);
   nextArrow.classList.toggle('hide', n===TOTAL_STEPS-1);
   step = n;
   onEnterStep(n);
   updateGateUI();
-  setTimeout(()=> isAnimating=false, 850);
+  setTimeout(()=>{
+    isAnimating=false;
+    body.classList.remove('is-transitioning');
+  }, 760);
 }
 
 /* forward-only nudge: if the current scene has an unfinished task, refuse to
@@ -1360,7 +1369,7 @@ const cursorDot = document.getElementById('cursorDot');
 let mx=innerWidth/2,my=innerHeight/2, cx=mx, cy=my;
 window.addEventListener('mousemove', e=>{
   mx=e.clientX; my=e.clientY;
-  if(!isTouch && Math.random()<0.15) spawnTrailHeart(mx,my);
+  if(!isTouch && !isAnimating && Math.random()<0.08) spawnTrailHeart(mx,my);
 });
 (function loop(){
   cx += (mx-cx)*0.18; cy += (my-cy)*0.18;
@@ -1370,8 +1379,14 @@ window.addEventListener('mousemove', e=>{
 document.addEventListener('mouseover', e=>{ if(e.target.closest('button,.flower,.memory-card,input,.dot,.wax-seal,.song-card')) cursorDot.classList.add('hover'); });
 document.addEventListener('mouseout', e=>{ if(e.target.closest('button,.flower,.memory-card,input,.dot,.wax-seal,.song-card')) cursorDot.classList.remove('hover'); });
 document.addEventListener('click', e=>{
+  if(isAnimating) return;
+  const now = performance.now();
+  if(now - perf.lastClickFx < 180) return;
+  perf.lastClickFx = now;
   rippleAt(e.clientX, e.clientY);
-  for(let i=0;i<6;i++) spawnTrailHeart(e.clientX,e.clientY,true);
+  if(!e.target.closest('[data-goto],.nav-arrow')){
+    for(let i=0;i<(perf.lowMotion ? 2 : 4);i++) spawnTrailHeart(e.clientX,e.clientY,true);
+  }
 });
 function spawnTrailHeart(x,y,burst){
   const el = document.createElement('div');
@@ -1440,7 +1455,7 @@ function handleSongCard(card){
     markSceneDone(3);
   }).catch(()=>{});
   const r = card.getBoundingClientRect();
-  for(let k=0;k<12;k++){
+  for(let k=0;k<(perf.lowMotion ? 4 : 8);k++){
     setTimeout(()=> spawnTrailHeart(r.left+r.width/2+(Math.random()*30-15), r.top+(Math.random()*20-10), true), k*26);
   }
 }
@@ -1541,7 +1556,7 @@ function updateFlowerRevealProgress(count){
 function spawnRevealSparkles(){
   flowerRevealSparkles.innerHTML = '';
   const glyphs = ['✨','💖','🌸','⭐','♥'];
-  const total = 14;
+  const total = perf.lowMotion ? 6 : 10;
   for(let i=0;i<total;i++){
     const s = document.createElement('span');
     s.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
@@ -1604,7 +1619,7 @@ flowerColors.forEach((c,i)=>{
     setTimeout(()=> clone.remove(), 820);
 
     f.classList.add('picked');
-    for(let k=0;k<10;k++){
+    for(let k=0;k<(perf.lowMotion ? 4 : 7);k++){
       setTimeout(()=>{
         const r=f.getBoundingClientRect();
         spawnTrailHeart(r.left+r.width/2 + (Math.random()*40-20), r.top + (Math.random()*20-10), true);
@@ -1640,7 +1655,7 @@ flowerColors.forEach((c,i)=>{
 function completeBouquet(){
   bouquetVase.classList.add('complete');
   gardenHintText.textContent = 'a bouquet made only of things I love about you 🌸';
-  for(let k=0;k<24;k++){
+  for(let k=0;k<(perf.lowMotion ? 8 : 14);k++){
     setTimeout(()=>{
       const r=bouquetVase.getBoundingClientRect();
       spawnTrailHeart(r.left+r.width/2+(Math.random()*60-30), r.top+(Math.random()*30-10), true);
@@ -1663,7 +1678,7 @@ function openEnvelope(){
   letterOpenedOnce = true;
   markSceneDone(4);
   const r = waxSeal.getBoundingClientRect();
-  for(let k=0;k<16;k++){
+  for(let k=0;k<(perf.lowMotion ? 5 : 10);k++){
     setTimeout(()=> spawnTrailHeart(r.left+r.width/2+(Math.random()*30-15), r.top+r.height/2+(Math.random()*20-10), true), k*24);
   }
   setTimeout(()=>{ letterModal.classList.add('show'); openLetterAmbience(); }, 750);
@@ -1704,7 +1719,7 @@ const letterObserver = new IntersectionObserver((entries)=>{
     if(en.isIntersecting && en.target.classList.contains('sign-off') && !signOffBurstFired){
       signOffBurstFired = true;
       const r = en.target.getBoundingClientRect();
-      for(let k=0;k<20;k++){
+      for(let k=0;k<(perf.lowMotion ? 6 : 12);k++){
         setTimeout(()=> spawnTrailHeart(r.left+Math.random()*r.width, r.top+Math.random()*r.height, true), k*40);
       }
     }
@@ -1987,7 +2002,7 @@ document.getElementById('wishBtn').addEventListener('click', ()=>{
 });
 function burstConfetti(){
   const colors=['#e8a0b4','#f4c98a','#c9a0e8','#f2a4c0','#fff3d0'];
-  for(let i=0;i<70;i++){
+  for(let i=0;i<(perf.lowMotion ? 28 : 46);i++){
     const p=document.createElement('div');
     const c=colors[Math.floor(Math.random()*colors.length)];
     p.style.cssText=`position:fixed;left:50%;top:55%;width:8px;height:8px;background:${c};z-index:9996;
@@ -2014,7 +2029,7 @@ function triggerCineFlash(){
   if(document.body.classList.contains('cine-deep')) return;
   document.body.classList.add('cine');
   clearTimeout(cineFlashTimer);
-  cineFlashTimer = setTimeout(()=> document.body.classList.remove('cine'), 1000);
+  cineFlashTimer = setTimeout(()=> document.body.classList.remove('cine'), 700);
 }
 
 function splitTitleLetters(el){
@@ -2050,7 +2065,7 @@ function startFinale(){
   const finalPhotoEl = document.getElementById('finalPhoto');
 
   let count=0;
-  const t=setInterval(()=>{ dropPetal(); count++; if(count>26) clearInterval(t); },230);
+  const t=setInterval(()=>{ dropPetal(); count++; if(count>(perf.lowMotion ? 12 : 20)) clearInterval(t); },230);
   setTimeout(startFinaleMorph, 900);
   setTimeout(fireworksLoop, 2200);
 
@@ -2205,7 +2220,7 @@ function ambientFireworks(){
 }
 function fireworkBurst(x,y){
   const colors=['#ffe0e6','#ffd28a','#e8a0b4','#c9a0e8','#fff6e0'];
-  for(let i=0;i<28;i++){
+  for(let i=0;i<(perf.lowMotion ? 12 : 20);i++){
     const p=document.createElement('div');
     const c=colors[Math.floor(Math.random()*colors.length)];
     p.style.cssText=`position:fixed;left:${x}px;top:${y}px;width:4px;height:4px;background:${c};
@@ -2237,24 +2252,67 @@ document.addEventListener('DOMContentLoaded', function() {
   const finalMessage = "Happy Birthday Vaishu";
 
   let currentIndex = 0;
+  let countdownStarted = false;
+  let voicesReady;
 
-  function speak(text) {
-    // Wait for voices to be loaded
+  function waitForVoices() {
+    if(!('speechSynthesis' in window)) return Promise.resolve([]);
     const voices = speechSynthesis.getVoices();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.pitch = 1.2;
-    utterance.rate = 0.8;
-    // You might want to select a specific voice here
-    speechSynthesis.speak(utterance);
+    if(voices.length) return Promise.resolve(voices);
+    if(voicesReady) return voicesReady;
+    voicesReady = new Promise(resolve => {
+      const done = () => {
+        speechSynthesis.removeEventListener('voiceschanged', done);
+        resolve(speechSynthesis.getVoices());
+      };
+      speechSynthesis.addEventListener('voiceschanged', done, {once:true});
+      setTimeout(done, 700);
+    });
+    return voicesReady;
   }
 
-  function showNextNumber() {
+  async function speak(text, options = {}) {
+    if(!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)){
+      await new Promise(resolve => setTimeout(resolve, options.fallback || 900));
+      return;
+    }
+
+    const voices = await waitForVoices();
+    await new Promise(resolve => setTimeout(resolve, 40));
+    speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(String(text));
+    const englishVoice = voices.find(v => /en(-|_)?IN/i.test(v.lang)) ||
+      voices.find(v => /en(-|_)?US/i.test(v.lang)) ||
+      voices.find(v => /^en/i.test(v.lang));
+    if(englishVoice) utterance.voice = englishVoice;
+    utterance.pitch = options.pitch || 1.12;
+    utterance.rate = options.rate || 0.95;
+    utterance.volume = 1;
+
+    return new Promise(resolve => {
+      let settled = false;
+      const finish = () => {
+        if(settled) return;
+        settled = true;
+        clearTimeout(timer);
+        resolve();
+      };
+      utterance.onend = finish;
+      utterance.onerror = finish;
+      const timer = setTimeout(finish, options.fallback || 1200);
+      speechSynthesis.resume();
+      speechSynthesis.speak(utterance);
+    });
+  }
+
+  async function showNextNumber() {
     if (currentIndex < countdownNumbers.length) {
       const number = countdownNumbers[currentIndex];
       countdownContainer.innerHTML = `<div class="countdown-number">${number}</div>`;
-      speak(number);
       currentIndex++;
-      setTimeout(showNextNumber, 1000);
+      await speak(number, {fallback: 1050, rate: 0.92});
+      setTimeout(showNextNumber, 120);
     } else {
       countdownContainer.innerHTML = `<div class="countdown-message"></div>`;
       const messageContainer = countdownContainer.querySelector('.countdown-message');
@@ -2267,7 +2325,7 @@ document.addEventListener('DOMContentLoaded', function() {
           messageContainer.appendChild(letterSpan);
       });
       
-      speak(finalMessage);
+      await speak(finalMessage, {fallback: 2400, rate: 0.86, pitch: 1.16});
       if (cheerSound.src) {
         cheerSound.play().catch(e => console.error("Audio playback failed:", e));
       }
@@ -2281,17 +2339,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  countdownOverlay.addEventListener('click', function() {
+  countdownOverlay.addEventListener('click', async function() {
+    if(countdownStarted) return;
+    countdownStarted = true;
     // Pre-load the main audio to ensure it's ready after the countdown
     const audioEl = document.getElementById('audioEl');
     if (audioEl) {
       audioEl.load();
     }
     cheerSound.load();
-    // Some browsers require a 'warm-up' play/pause for speech synthesis
-    speechSynthesis.speak(new SpeechSynthesisUtterance(' '));
-    speechSynthesis.cancel();
-    
+    if('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window){
+      speechSynthesis.cancel();
+      speechSynthesis.resume();
+      const warmup = new SpeechSynthesisUtterance(' ');
+      warmup.volume = 0;
+      speechSynthesis.speak(warmup);
+    }
+    await waitForVoices();
     showNextNumber();
   }, { once: true });
 });
