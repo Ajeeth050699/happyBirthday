@@ -132,7 +132,11 @@ h1.display .heart{color:var(--accent); display:inline-block; animation:pulse 1.8
 
 .btn{margin-top:2.2rem; position:relative; padding:.9rem 2.1rem; border-radius:999px; background:var(--glass-bg);
   border:1px solid var(--glass-border); backdrop-filter:blur(14px); color:var(--paper); font-family:'Poppins'; font-size:.78rem;
-  letter-spacing:.1em; text-transform:uppercase; cursor:none; overflow:hidden; transition:transform .35s ease, box-shadow .35s ease, background .35s ease, opacity .35s ease;}
+  letter-spacing:.1em; text-transform:uppercase; cursor:none; overflow:hidden; transition:transform .35s ease, box-shadow .35s ease, background .35s ease, opacity .35s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 body.touch .btn{cursor:pointer;}
 .btn::before{content:''; position:absolute; inset:-2px; border-radius:999px; padding:1px;
   background:linear-gradient(120deg, var(--rose), var(--gold), var(--blush), var(--rose)); background-size:300% 300%;
@@ -416,9 +420,9 @@ body.touch .letter-close{cursor:pointer;}
 @keyframes bulbTwinkle{0%,100%{opacity:.45; transform:scale(.85);}50%{opacity:1; transform:scale(1.15);}}
 
 /* ---------- STEP 6 : MEMORY WALL ---------- */
-.memories-wrap{width:min(1000px,94vw); max-height:100%; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:2rem;}
-.memory-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:1.1rem 1rem; margin-top:1.6rem; perspective:1200px;}
-@media(min-width:640px){.memory-grid{grid-template-columns:repeat(4,1fr); gap:1.6rem 1.4rem;}}
+.memories-wrap{width:min(1000px,94vw); padding-bottom:2rem;}
+.memory-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:1.1rem 1rem; margin-top:1.6rem; perspective:1200px;}
+@media(min-width:640px){.memory-grid{grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1.6rem 1.4rem;}}
 .memory-card{position:relative; aspect-ratio:3/4; border-radius:10px; overflow:hidden; cursor:none; border:6px solid #fffaf3;
   background:#fffaf3; transform-style:preserve-3d; box-shadow:0 14px 30px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.2);
   opacity:0; transform:translateY(40px) scale(.85) rotate(var(--tilt,0deg));
@@ -438,7 +442,13 @@ body.touch .memory-card{cursor:pointer;}
   backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; font-size:.7rem; color:#fff; opacity:0; transition:opacity .3s ease;}
 .memory-card:hover .zoom-hint{opacity:1;}
 .memory-note{font-family:'Poppins'; font-size:.68rem; color:rgba(255,248,240,.6); margin-top:1.5rem; text-shadow:0 2px 8px rgba(0,0,0,.5);}
-.memory-surprise-btn{margin-top:.4rem;}
+.gallery-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
 .memory-surprise-btn .dice{display:inline-block;}
 .memory-surprise-btn .dice.spin{animation:diceSpin .6s cubic-bezier(.3,.8,.3,1);}
 
@@ -559,7 +569,7 @@ body.touch .quote-controls button{cursor:pointer;}
 
   /* Memory wall — allow the grid to actually scroll on small screens
      instead of being clipped top/bottom inside the fixed-height scene */
-  .memories-wrap{max-height:78vh; padding-bottom:5rem;}
+  .memories-wrap{padding-bottom:5rem;}
   .memory-grid{gap:.8rem .7rem;}
   .memory-card{border-width:4px; border-radius:7px;}
 
@@ -580,7 +590,7 @@ body.touch .quote-controls button{cursor:pointer;}
   .nav-arrow.prev{left:6vw;} .nav-arrow.next{right:6vw;}
 }
 @media(max-width:360px){
-  .memory-grid{grid-template-columns:repeat(2,1fr); gap:.6rem;}
+  .memory-grid{grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:.6rem;}
   .btn{padding:.75rem 1.5rem; font-size:.7rem;}
   .btn.big{padding:.95rem 1.9rem; font-size:.78rem;}
   h1.display{font-size:clamp(1.4rem,7.4vw,2.2rem);}
@@ -607,6 +617,43 @@ body.touch .quote-controls button{cursor:pointer;}
   .song-card{width:96px;}
 }
 @media(prefers-reduced-motion: reduce){ *{animation-duration:.001s !important; transition-duration:.2s !important;} }
+</style>
+<style>
+.scroll-view::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scroll-view::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.08);
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+}
+
+.scroll-view::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+        180deg,
+        #ff9ecf,
+        #ff5fa2,
+        #ff9ecf
+    );
+    border-radius: 50px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: .3s;
+}
+
+.scroll-view::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+        180deg,
+        #ffd166,
+        #ff4d8d,
+        #ffb3d9
+    );
+}
+
+.scroll-view::-webkit-scrollbar-corner{
+    background: transparent;
+}
 </style>
 </head>
 <body class="step-0">
@@ -636,7 +683,7 @@ body.touch .quote-controls button{cursor:pointer;}
 
 <main id="scenes">
 
-  <section class="scene active" data-step="0" id="scene-gate">
+  <section class="scene scroll-view active" data-step="0" id="scene-gate">
     <div class="gate-heart">❤<span class="beacon-ring"></span><span class="beacon-ring"></span><span class="beacon-ring"></span></div>
     <img class="portrait-art hero-birthday-art" src="assets/happy-birthday.png" alt="Happy Birthday Vaishu portrait" loading="eager">
     <div class="eyebrow">A Little Journey, For You</div>
@@ -646,7 +693,7 @@ body.touch .quote-controls button{cursor:pointer;}
     <p class="gate-note">turn your volume up — I made this with a little song for you</p>
   </section>
 
-  <section class="scene" data-step="1" id="scene-night">
+  <section class="scene scroll-view" data-step="1" id="scene-night">
     <div class="eyebrow">Under a Sky Just for Us</div>
     <h1 class="display">Ajeeth <span class="heart">❤</span> Vaishnavi</h1>
     <p class="script">"Every heartbeat of mine whispers your name."</p>
@@ -664,7 +711,7 @@ body.touch .quote-controls button{cursor:pointer;}
     <button class="btn" data-goto="2"><span>Continue ✦</span></button>
   </section>
 
-  <section class="scene" data-step="2" id="scene-garden">
+  <section class="scene scroll-view" data-step="2" id="scene-garden">
     <div class="eyebrow">A Garden That Blooms Like You</div>
     <h1 class="display" style="font-size:clamp(1.4rem,5vw,2.4rem)">Pick a Bouquet of Little Things I Adore</h1>
     <div class="bouquet-feature">
@@ -685,7 +732,7 @@ body.touch .quote-controls button{cursor:pointer;}
     <button class="btn locked" data-goto="3"><span>Continue ✦</span></button>
   </section>
 
-  <section class="scene" data-step="3" id="scene-song">
+  <section class="scene scroll-view" data-step="3" id="scene-song">
     <div class="eyebrow">The Song That Plays When I Think of You</div>
     <h1 class="display" style="font-size:clamp(1.3rem,4.4vw,2.1rem)">Our Song</h1>
     <div class="song-feature">
@@ -714,7 +761,7 @@ body.touch .quote-controls button{cursor:pointer;}
     <button class="btn locked" data-goto="4"><span>Continue ✦</span></button>
   </section>
 
-  <section class="scene" data-step="4" id="scene-letter">
+  <section class="scene scroll-view" data-step="4" id="scene-letter">
     <div class="eyebrow">A Letter I Kept Rewriting</div>
     <h1 class="display" style="font-size:clamp(1.3rem,4.6vw,2.1rem)">For My Healer, Vaishu</h1>
     <div class="letter-layout">
@@ -732,7 +779,7 @@ body.touch .quote-controls button{cursor:pointer;}
     <button class="btn locked" data-goto="5" id="afterLetterBtn"><span>Continue ✦</span></button>
   </section>
 
-  <section class="scene" data-step="5" id="scene-timeline">
+  <section class="scene scroll-view" data-step="5" id="scene-timeline">
     <div class="eyebrow">How We Got Here</div>
     <h1 class="display" style="font-size:clamp(1.3rem,4.6vw,2.1rem)">Our Little Timeline</h1>
     <div class="timeline-layout">
@@ -742,19 +789,21 @@ body.touch .quote-controls button{cursor:pointer;}
     <button class="btn" data-goto="6"><span>Continue ✦</span></button>
   </section>
 
-  <section class="scene" data-step="6" id="scene-memories">
+  <section class="scene scroll-view" data-step="6" id="scene-memories">
     <div class="memories-wrap">
       <div class="eyebrow">Moments We Keep</div>
       <h1 class="display" style="font-size:clamp(1.3rem,3.8vw,2.1rem)">Our Little Memory Wall</h1>
       <p class="scene-hint" id="hint-6"><span class="hint-emoji">📸</span> tap a memory to relive it</p>
       <div class="fairy-lights" id="fairyLights"></div>
       <div class="memory-grid" id="memoryGrid"></div>
-      <button class="btn memory-surprise-btn" id="memorySurpriseBtn"><span><span class="dice">🎲</span> Surprise Memory</span></button>
-      <button class="btn locked" data-goto="7"><span>Continue ✦</span></button>
+      <div class="gallery-buttons">
+        <button class="btn memory-surprise-btn" id="memorySurpriseBtn"><span><span class="dice">🎲</span> Surprise Memory</span></button>
+        <button class="btn locked" data-goto="7"><span>Continue ✦</span></button>
+      </div>
     </div>
   </section>
 
-  <section class="scene" data-step="7" id="scene-reasons">
+  <section class="scene scroll-view" data-step="7" id="scene-reasons">
     <div class="eyebrow">Why I Love You</div>
     <div class="reasons-layout">
       <div class="reasons-photo-col">
@@ -781,7 +830,7 @@ body.touch .quote-controls button{cursor:pointer;}
     <button class="btn" data-goto="8"><span>Continue ✦</span></button>
   </section>
 
-  <section class="scene" data-step="8" id="scene-celebration">
+  <section class="scene scroll-view" data-step="8" id="scene-celebration">
     <div class="eyebrow">Make a Wish, Doctor</div>
     <h1 class="display" style="font-size:clamp(1.5rem,5vw,2.6rem)">Happy Birthday <span class="heart">❤</span></h1>
     <div class="cake-scene" id="cakeScene">
@@ -795,7 +844,7 @@ body.touch .quote-controls button{cursor:pointer;}
     <button class="btn" id="wishBtn"><span>Blow the Candles ✦</span></button>
   </section>
 
-  <section class="scene" data-step="9" id="scene-final">
+  <section class="scene scroll-view" data-step="9" id="scene-final">
     <div class="final-heart">❤</div>
     <img class="final-photo" id="finalPhoto" src="assets/final-ring.png" alt="Ajeeth proposing forever to Vaishu">
     <h1 class="display">Happy Birthday<br>My Vaishu</h1>
@@ -820,7 +869,7 @@ body.touch .quote-controls button{cursor:pointer;}
 <div class="letter-modal" id="letterModal">
   <div class="letter-card">
     <button class="letter-close" id="letterClose">✕</button>
-    <div class="letter-scroll">
+    <div class="letter-scroll scroll-view">
       <p class="letter-heading">To My Dearest Vaishu ❤</p>
       <p><strong>Happy Birthday, My Love.</strong></p>
       <p>My healer Vaishu,</p>
@@ -999,6 +1048,10 @@ document.addEventListener('touchend', e=>{
 
 function onEnterStep(n){
   particleMode = ['dawn','wind','garden','song','letter','timeline','memory','glow','confetti','night'][n];
+  if(n===4 && letterOpenedOnce){
+    letterModal.classList.add('show');
+    openLetterAmbience();
+  }
   if(n===5) setTimeout(revealTimeline, 250);
   if(n===6) setTimeout(revealMemoryGrid, 250);
   if(n===7) resetQuotes();
