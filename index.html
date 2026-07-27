@@ -464,22 +464,25 @@ body.touch .memory-card{cursor:pointer;}
 .lightbox.show{opacity:1; visibility:visible; transition:opacity .5s ease;}
 .lightbox-stage{position:relative; width:min(560px,90vw); max-height:84vh; max-height:84dvh; display:flex; flex-direction:column; align-items:center;}
 .lightbox-frame{position:relative; width:100%; border-radius:12px; overflow:hidden; box-shadow:0 30px 90px rgba(0,0,0,.6); border:8px solid #fffaf3; background:#000;}
-.lightbox-frame img{width:100%; max-height:66vh; max-height:66dvh; object-fit:contain; display:block; background:#0a0a12;
+.lightbox-frame img{width:100%; max-height:70vh; max-height:70dvh; object-fit:contain; display:block; background:#0a0a12;
   opacity:0; transform:scale(1.04); transition:opacity .5s ease, transform .6s cubic-bezier(.2,.7,.3,1);}
 .lightbox-frame img.in{opacity:1; transform:scale(1);}
 .lightbox-cap{font-family:'Cormorant Garamond'; font-style:italic; color:var(--paper); text-align:center; margin-top:1rem; font-size:clamp(.9rem,2.6vw,1.1rem); max-width:90%; text-shadow:0 2px 10px rgba(0,0,0,.6);}
-.lightbox-close{position:absolute; top:-14px; right:-14px; z-index:5; background:rgba(255,255,255,.14); border:1px solid var(--glass-border); width:36px; height:36px;
-  border-radius:50%; color:#fff; font-size:1rem; cursor:none; backdrop-filter:blur(10px); transition:transform .3s ease;}
-body.touch .lightbox-close{cursor:pointer;}
+.lightbox-close{position:absolute; top:10px; right:10px; z-index:5; background:rgba(0,0,0,.3); backdrop-filter:blur(8px); border:none; width:34px; height:34px;
+  border-radius:50%; color:#fff; font-size:1rem; cursor:none; transition:transform .3s ease;}
 .lightbox-close:hover{transform:scale(1.1);}
-body.touch .lightbox-close{cursor:pointer;}
 .lightbox-nav{position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.14); border:1px solid var(--glass-border);
-  width:42px; height:42px; border-radius:50%; color:#fff; font-size:1.2rem; cursor:none; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(10px); transition:transform .3s ease;}
-body.touch .lightbox-nav{cursor:pointer;}
+  width:42px; height:42px; border-radius:50%; color:#fff; font-size:1.2rem; cursor:none; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(10px); transition:transform .3s ease, left .3s ease, right .3s ease;}
 .lightbox-nav:hover{transform:translateY(-50%) scale(1.1);}
-body.touch .lightbox-nav{cursor:pointer;}
-.lightbox-nav.prevL{left:-6px;} .lightbox-nav.nextL{right:-6px;}
-@media(max-width:640px){.lightbox-nav{width:36px;height:36px;font-size:1rem;} .lightbox-nav.prevL{left:-4px;} .lightbox-nav.nextL{right:-4px;}}
+.lightbox-nav.prevL{left:-52px;} .lightbox-nav.nextL{right:-52px;}
+body.touch .lightbox-close, body.touch .lightbox-nav{cursor:pointer;}
+
+@media(max-width:768px){
+  .lightbox-stage{max-height:90vh; max-height:90dvh;}
+  .lightbox-frame img{max-height:75vh; max-height:75dvh;}
+  .lightbox-nav{width:38px;height:38px;font-size:1.1rem;}
+  .lightbox-nav.prevL{left:6px;} .lightbox-nav.nextL{right:6px;}
+}
 .lightbox-count{font-family:'Poppins'; font-size:.68rem; letter-spacing:.15em; color:rgba(255,248,240,.6); margin-top:.6rem; text-transform:uppercase;}
 
 /* ---------- STEP 7 : REASONS I LOVE YOU ---------- */
@@ -600,7 +603,7 @@ body.touch .quote-controls button{cursor:pointer;}
   .nav-arrow.prev{left:6vw;} .nav-arrow.next{right:6vw;}
 }
 @media(max-width:360px){
-  .memory-grid{grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:.6rem;}
+  .memory-grid{grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); margin-top:25rem; gap:.6rem;}
   .btn{padding:.75rem 1.5rem; font-size:.7rem;}
   .btn.big{padding:.95rem 1.9rem; font-size:.78rem;}
   h1.display{font-size:clamp(1.4rem,7.4vw,2.2rem);}
